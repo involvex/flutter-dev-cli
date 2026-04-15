@@ -1,16 +1,17 @@
 {
-	"name": "involvexs-flutter-cli",
+	"name": "@involvexs/flutter-dev-cli",
 	"version": "0.0.0",
 	"description": "A Cli that helps with flutter development",
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "git+https://github.com/involvex/flutter-dev-cli.git"
 	},
+	"funding": "https://github.com/sponsors/involvex",
 	"license": "MIT",
 	"author": "involvex",
 	"type": "module",
 	"bin": {
-		"involvexs-flutter-cli": "dist/cli.js"
+		"flutter-dev-cli": "dist/cli.js"
 	},
 	"files": [
 		"dist",
@@ -61,5 +62,8 @@
 	},
 	"engines": {
 		"node": ">=16"
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/involvex"
 	}
 }

@@ -2,7 +2,6 @@ import SelectInput from '../components/select-input.js'
 import {readdir, readFile} from 'fs/promises'
 import {useState, useEffect} from 'react'
 import {Text, Box, useInput} from 'ink'
-import TextInput from 'ink-text-input'
 import {join} from 'path'
 
 interface DocFile {
@@ -15,6 +14,7 @@ interface DocCategory {
 	id: string
 	name: string
 	path: string
+	isSearch?: boolean
 }
 
 const categories: DocCategory[] = [
@@ -29,6 +29,7 @@ const categories: DocCategory[] = [
 	{id: 'roadmap', name: 'Roadmap', path: 'roadmap'},
 	{id: 'tool', name: 'Tool', path: 'tool'},
 	{id: 'wiki_archive', name: 'Wiki Archive', path: 'wiki_archive'},
+	{id: 'search', name: 'Search Docs...', path: '', isSearch: true},
 ]
 
 async function findDocs(
@@ -113,6 +114,12 @@ export default function FlutterDocs({onBack}: {onBack: () => void}) {
 	const handleCategorySelect = async (item: {label: string; value: string}) => {
 		const cat = categories.find(c => c.id === item.value)
 		if (cat) {
+			if (cat.isSearch) {
+				setView('search')
+				setSearchResults([])
+				setSearchQuery('')
+				return
+			}
 			setSelectedCategory(cat)
 			const docs = await findDocs(join('docs', cat.path))
 			setDocFiles(docs)
@@ -148,8 +155,8 @@ export default function FlutterDocs({onBack}: {onBack: () => void}) {
 		}
 	})
 
-	// Search view
-	if (view === 'search') {
+	// Search results view
+	if (view === 'search' && searchResults.length > 0) {
 		return (
 			<Box
 				flexDirection="column"
@@ -163,17 +170,13 @@ export default function FlutterDocs({onBack}: {onBack: () => void}) {
 						Search Results: "{searchQuery}"
 					</Text>
 				</Box>
-				{searchResults.length > 0 ? (
-					<SelectInput
-						items={searchResults.map(d => ({
-							label: d.title,
-							value: d.path,
-						}))}
-						onSelect={handleDocSelect}
-					/>
-				) : (
-					<Text dimColor>No results found</Text>
-				)}
+				<SelectInput
+					items={searchResults.map(d => ({
+						label: d.title,
+						value: d.path,
+					}))}
+					onSelect={handleDocSelect}
+				/>
 				<Box marginTop={1}>
 					<Text dimColor>Enter Select • Esc Back</Text>
 				</Box>
@@ -247,6 +250,18 @@ export default function FlutterDocs({onBack}: {onBack: () => void}) {
 		)
 	}
 
+	// Search input view (no results yet)
+	if (view === 'search' && searchResults.length === 0) {
+		return (
+			<SearchInputView
+				searchQuery={searchQuery}
+				setSearchQuery={setSearchQuery}
+				onSearch={handleSearch}
+				onBack={() => setView('categories')}
+			/>
+		)
+	}
+
 	// Categories view
 	return (
 		<Box
@@ -276,25 +291,74 @@ export default function FlutterDocs({onBack}: {onBack: () => void}) {
 				}))}
 				onSelect={handleCategorySelect}
 			/>
-			<Box
-				marginTop={1}
-				flexDirection="column"
-			>
+			<Box marginTop={1}>
+				<Text dimColor>Enter Select • Esc Back</Text>
+			</Box>
+		</Box>
+	)
+}
+
+interface SearchInputViewProps {
+	searchQuery: string
+	setSearchQuery: (q: string) => void
+	onSearch: () => void
+	onBack: () => void
+}
+
+function SearchInputView({
+	searchQuery,
+	setSearchQuery,
+	onSearch,
+	onBack,
+}: SearchInputViewProps) {
+	const [inputValue, setInputValue] = useState(searchQuery)
+
+	useInput(
+		(input, key) => {
+			if (key.return) {
+				setSearchQuery(inputValue)
+				onSearch()
+			} else if (key.escape) {
+				onBack()
+			} else if (key.backspace) {
+				setInputValue(val => val.slice(0, -1))
+			} else if (input) {
+				setInputValue(val => val + input)
+			}
+		},
+		{isActive: true},
+	)
+
+	return (
+		<Box
+			flexDirection="column"
+			borderStyle="round"
+			borderColor="cyan"
+			padding={1}
+		>
+			<Box marginBottom={1}>
 				<Text
 					bold
-					color="magenta"
+					color="cyan"
 				>
-					Search:
+					Search Docs
 				</Text>
-				<TextInput
-					value={searchQuery}
-					onChange={setSearchQuery}
-					onSubmit={handleSearch}
-					placeholder="Search docs..."
-				/>
+			</Box>
+			<Box
+				marginX={2}
+				marginBottom={1}
+			>
+				<Text>Enter search query:</Text>
+			</Box>
+			<Box
+				borderStyle="round"
+				paddingX={1}
+				marginX={2}
+			>
+				<Text>{inputValue || '_'}</Text>
 			</Box>
 			<Box marginTop={1}>
-				<Text dimColor>Enter Select • Type to search • Esc Back</Text>
+				<Text dimColor>Type to search • Enter Search • Esc Back</Text>
 			</Box>
 		</Box>
 	)
