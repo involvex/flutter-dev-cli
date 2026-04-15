@@ -1,0 +1,64 @@
+{
+	"name": "involvexs-flutter-cli",
+	"version": "0.0.0",
+	"description": "A Cli that helps with flutter development",
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"license": "MIT",
+	"author": "involvex",
+	"type": "module",
+	"bin": {
+		"involvexs-flutter-cli": "dist/cli.js"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"prebuild": "bun run format && bun run lint:fix && bun run typecheck",
+		"build": "bun build src/cli.tsx --outdir dist --target node",
+		"dev": "bun run --hot src/cli.tsx",
+		"format": "prettier --write .",
+		"lint": "eslint src",
+		"lint:fix": "eslint src --fix",
+		"start": "bun run src/cli.tsx",
+		"typecheck": "tsc --noEmit"
+	},
+	"prettier": "@involvex/prettier-config",
+	"dependencies": {
+		"ink": "latest",
+		"ink-select-input": "latest",
+		"ink-text-input": "latest",
+		"meow": "latest",
+		"react": "latest",
+		"react-devtools-core": "latest"
+	},
+	"devDependencies": {
+		"@eslint/js": "latest",
+		"@involvex/prettier-config": "latest",
+		"@types/ink": "latest",
+		"@types/ink-select-input": "latest",
+		"@types/ink-text-input": "latest",
+		"@types/node": "latest",
+		"@types/react": "latest",
+		"@typescript-eslint/eslint-plugin": "latest",
+		"@typescript-eslint/parser": "latest",
+		"chalk": "latest",
+		"eslint": "latest",
+		"eslint-plugin-react": "latest",
+		"eslint-plugin-react-hooks": "latest",
+		"globals": "latest",
+		"ink-testing-library": "^3.0.0",
+		"jiti": "latest",
+		"prettier": "latest",
+		"prettier-plugin-organize-imports": "^4.3.0",
+		"prettier-plugin-packagejson": "^3.0.0",
+		"prettier-plugin-sort-imports": "^1.8.10",
+		"ts-node": "latest",
+		"typescript": "latest"
+	},
+	"engines": {
+		"node": ">=16"
+	}
+}
