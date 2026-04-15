@@ -13,7 +13,8 @@
 		"involvexs-flutter-cli": "dist/cli.js"
 	},
 	"files": [
-		"dist"
+		"dist",
+		"docs"
 	],
 	"scripts": {
 		"prebuild": "bun run format && bun run lint:fix && bun run typecheck",
