@@ -3,23 +3,29 @@ import pkg from '../package.json' with {type: 'json'}
 import {Text, Box, useInput} from 'ink'
 import {useState} from 'react'
 
+import FlutterCommands from './commands/flutter-commands.js'
+import FlutterCreate from './commands/flutter-create.js'
+import DartCommands from './commands/dart-commands.js'
+import FlutterDocs from './commands/flutter-docs.js'
+import NewProject from './commands/new-project.js'
 import Settings from './commands/settings.js'
-import Welcome from './commands/welcome.js'
 import Version from './commands/version.js'
 import About from './commands/about.js'
 import Help from './commands/help.js'
 import Exit from './commands/exit.js'
-import Demo from './commands/demo.js'
 
 type AppScreen =
-	| 'welcome'
 	| 'menu'
 	| 'help'
 	| 'about'
 	| 'version'
 	| 'settings'
-	| 'demo'
 	| 'exit'
+	| 'flutter-create'
+	| 'flutter-commands'
+	| 'dart-commands'
+	| 'new-project'
+	| 'flutter-docs'
 
 interface BackableScreenProps {
 	children: React.ReactNode
@@ -47,30 +53,27 @@ function BackableScreen({children, onBack}: BackableScreenProps) {
 }
 
 export default function App() {
-	const [screen, setScreen] = useState<AppScreen>('welcome')
+	const [screen, setScreen] = useState<AppScreen>('menu')
 
-	const _goWelcome = () => setScreen('welcome')
 	const goMenu = () => setScreen('menu')
 	const _goHelp = () => setScreen('help')
 	const _goAbout = () => setScreen('about')
 	const _goVersion = () => setScreen('version')
 	const _goSettings = () => setScreen('settings')
-	const _goDemo = () => setScreen('demo')
 	const _goExit = () => setScreen('exit')
 
 	const menuItems: SelectItem<AppScreen>[] = [
-		{label: '→ Welcome', value: 'welcome'},
-		{label: '→ Demo', value: 'demo'},
+		{label: '→ New Project', value: 'new-project'},
+		{label: '→ Flutter Create', value: 'flutter-create'},
+		{label: '→ Flutter Commands', value: 'flutter-commands'},
+		{label: '→ Dart Commands', value: 'dart-commands'},
+		{label: '→ Flutter Docs', value: 'flutter-docs'},
 		{label: '→ Help', value: 'help'},
 		{label: '→ Settings', value: 'settings'},
 		{label: '→ About', value: 'about'},
 		{label: '→ Version', value: 'version'},
 		{label: '→ Exit', value: 'exit'},
 	]
-
-	if (screen === 'welcome') {
-		return <Welcome onComplete={goMenu} />
-	}
 
 	if (screen === 'menu') {
 		return (
@@ -177,10 +180,48 @@ export default function App() {
 		)
 	}
 
-	if (screen === 'demo') {
+	if (screen === 'flutter-create') {
 		return (
 			<BackableScreen onBack={goMenu}>
-				<Demo />
+				<FlutterCreate onBack={goMenu} />
+			</BackableScreen>
+		)
+	}
+
+	if (screen === 'flutter-commands') {
+		return (
+			<BackableScreen onBack={goMenu}>
+				<FlutterCommands onBack={goMenu} />
+			</BackableScreen>
+		)
+	}
+
+	if (screen === 'dart-commands') {
+		return (
+			<BackableScreen onBack={goMenu}>
+				<DartCommands onBack={goMenu} />
+			</BackableScreen>
+		)
+	}
+
+	if (screen === 'new-project') {
+		return (
+			<BackableScreen onBack={goMenu}>
+				<NewProject
+					onSelect={(option: string) => {
+						if (option === 'flutter-create') {
+							setScreen('flutter-create')
+						}
+					}}
+				/>
+			</BackableScreen>
+		)
+	}
+
+	if (screen === 'flutter-docs') {
+		return (
+			<BackableScreen onBack={goMenu}>
+				<FlutterDocs onBack={goMenu} />
 			</BackableScreen>
 		)
 	}

@@ -62,12 +62,13 @@ loader = {
 ".js" = "jsx", ".ts" = "tsx",
 ".tsx" = "tsx",
 ".json" = "json",
-# Loader configuration for file types
+
 
 }
 
-".txt" = "text"
 env = {
-  # Environment variables
+  
 
-}NODE_ENV = "development"
+
+
+}NODE_ENV = "development"# Environment variables".txt" = "text"# Loader configuration for file types
