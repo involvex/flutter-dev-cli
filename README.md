@@ -66,6 +66,7 @@ bun run start
 ```
 
 Navigate using:
+
 - `↑/↓` - Navigate menu
 - `Enter` - Select option
 - `Esc` - Go back
@@ -91,18 +92,18 @@ flutter-dev-cli --demo
 
 ## Available Commands
 
-| Command | Description |
-|---------|-------------|
-| **New Project** | Create a new Flutter project with templates |
-| **Flutter Create** | Run `flutter create` with options |
-| **Flutter Commands** | Execute common Flutter commands |
-| **Dart Commands** | Execute Dart commands |
-| **Flutter Docs** | Browse Flutter documentation |
-| **Help** | Show help information |
-| **Settings** | Configure CLI settings |
-| **About** | About this CLI |
-| **Version** | Show version info |
-| **Exit** | Exit the application |
+| Command              | Description                                 |
+| -------------------- | ------------------------------------------- |
+| **New Project**      | Create a new Flutter project with templates |
+| **Flutter Create**   | Run `flutter create` with options           |
+| **Flutter Commands** | Execute common Flutter commands             |
+| **Dart Commands**    | Execute Dart commands                       |
+| **Flutter Docs**     | Browse Flutter documentation                |
+| **Help**             | Show help information                       |
+| **Settings**         | Configure CLI settings                      |
+| **About**            | About this CLI                              |
+| **Version**          | Show version info                           |
+| **Exit**             | Exit the application                        |
 
 ## Development
 
@@ -133,11 +134,11 @@ src/
 
 ### Build Commands
 
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Run in hot reload development mode |
-| `bun run start` | Run CLI directly with Bun |
-| `bun run build` | Build to `dist/` (production) |
+| Command            | Description                              |
+| ------------------ | ---------------------------------------- |
+| `bun run dev`      | Run in hot reload development mode       |
+| `bun run start`    | Run CLI directly with Bun                |
+| `bun run build`    | Build to `dist/` (production)            |
 | `bun run prebuild` | Format, lint, and typecheck before build |
 
 ### Code Quality
